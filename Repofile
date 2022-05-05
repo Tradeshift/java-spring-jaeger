@@ -1,0 +1,4 @@
+{
+	"description": "Library for Jaeger implementation of the OpenTracing's io.opentracing.Tracer interface.",
+	"maintainers": ["Validations and Compliance"]
+}

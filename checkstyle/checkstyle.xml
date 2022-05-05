@@ -1,0 +1,149 @@
+<!-- https://github.com/checkstyle/checkstyle/blob/checkstyle-8.19/config/checkstyle_checks.xml -->
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <module name="SuppressWarningsFilter"/>
+    <module name="SuppressionFilter">
+        <property name="file" value="${checkstyle.config.path}/suppressions.xml"/>
+        <property name="optional" value="false"/>
+    </module>
+    <module name="FileTabCharacter"/>
+    <!-- Unmaintainable Javadoc tags. -->
+    <module name="RegexpSingleline">
+        <property name="format" value="(\&#032;@(author|version)|\(non-Javadoc\))"/>
+        <property name="ignoreCase" value="true"/>
+        <property name="message" value="unmaintainable Javadoc tags: @author, @version, or (non-Javadoc)"/>
+    </module>
+    <!-- IDE-generated comment. -->
+    <module name="RegexpSingleline">
+        <property name="format" value="File \| Settings \| File Templates"/>
+        <property name="message" value="IDE-generated comment"/>
+    </module>
+    <!-- Force UNIX line separator. -->
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="lf"/>
+    </module>
+    <!-- Trailing whitespace. -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="trailing whitespace"/>
+    </module>
+    <!-- Prohibit consecutive empty lines (except the lines after package/import). -->
+    <module name="RegexpMultiline">
+        <property name="format" value="\n *(?!package )(?!import )[^\n]+\n{3,}"/>
+        <property name="message" value="two or more consecutive empty lines"/>
+    </module>
+    <!-- Prohibit an empty after { or before }. -->
+    <module name="RegexpMultiline">
+        <property name="format" value="\n\n\s+\}[^\n]{0,10}\n"/>
+        <property name="message" value="an empty line before '}'"/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="format" value="\n\s+[^\n]{1,8}\{\n\n"/>
+        <property name="message" value="an empty line after a short line that ends with '{'"/>
+    </module>
+    <module name="LineLength">
+        <property name="max" value="200"/>
+        <property name="ignorePattern"
+                  value="@ExampleValue|@Description|@ParamDescriptions|@ReturnDescription|(&quot;.*&quot;)|^import"/>
+    </module>
+
+    <module name="TreeWalker">
+        <module name="SuppressWarningsHolder"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround">
+            <property name="tokens"
+                      value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, DIV, DIV_ASSIGN, EQUAL, GE, GT, LAND, LCURLY, LE, LITERAL_ASSERT, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN, TYPE_EXTENSION_AND"/>
+        </module>
+        <!-- Ensure that both @Deprecated and Javadoc @deprecated are present. -->
+        <module name="MissingDeprecated"/>
+        <!-- Ensure that @Override annotation is always present. -->
+        <module name="MissingOverride"/>
+        <module name="PackageAnnotation"/>
+        <module name="LeftCurly"/>
+        <module name="RightCurly"/>
+        <!-- Ensure that if else statements has braces, to avoid #gotofail. -->
+        <module name="NeedBraces"/>
+        <!-- Finds nested blocks, i.e. blocks that are used freely in the code.
+             Rationale: Nested blocks are often leftovers from the debugging process,
+             they confuse the reader. -->
+        <module name="AvoidNestedBlocks">
+            <property name="allowInSwitchCase" value="true"/>
+        </module>
+        <!-- Makes sure that utility classes (classes that contain only static methods or
+             fields in their API) do not have a public constructor.
+             Rationale: Instantiating utility classes does not make sense. Hence the
+             constructors should either be private or (if you want to allow subclassing)
+             protected. A common mistake is forgetting to hide the default constructor. -->
+        <module name="CovariantEquals"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <!-- Checks that an overriding finalize() method invokes super.finalize(). -->
+        <module name="SuperFinalize"/>
+        <module name="PackageDeclaration"/>
+        <!-- Checks for redundant, explicit initialization of fields, e.g. private String foo = null; -->
+        <module name="ExplicitInitialization"/>
+        <!-- Check that the default is after all the cases in a switch statement. -->
+        <module name="DefaultComesLast"/>
+        <module name="UnnecessaryParentheses"/>
+        <module name="AvoidStarImport">
+            <property name="allowStaticMemberImports" value="true"/>
+        </module>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="true"/>
+        </module>
+        <!-- "java" and "javax" packages together first, then "org" and then all other imports. -->
+        <!-- Imports will be sorted in the groups. -->
+        <!-- Groups are separated by, at least, one blank line. -->
+        <!-- Static imports are above each local groups. -->
+        <module name="ImportOrder">
+            <property name="groups" value="/^javax?\./,org"/>
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="top"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
+
+        <!--                    -->
+        <!-- Java Documentation -->
+        <!--                    -->
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="false"/>
+            <property name="checkHtml" value="false"/>
+        </module>
+
+        <!--                    -->
+        <!-- Misc & Whitespace  -->
+        <!--                    -->
+        <!-- Long constants should be uppercase L not l, not to lead confusion between 1 and l. -->
+        <module name="UpperEll"/>
+        <!-- Prefer byte[] var; over "C"-style array declaration like byte var[]; -->
+        <module name="ArrayTypeStyle"/>
+        <!-- Ensure class name matches file. -->
+        <module name="OuterTypeFilename"/>
+        <!-- Order static, final, volatile etc. in JLS order. -->
+        <module name="ModifierOrder"/>
+        <!-- Removes implied modifiers, fx public from interfaces method signatures. -->
+        <module name="RedundantModifier"/>
+        <!-- Whitespace around Java generic types, e.g. Foo<A, B>. -->
+        <module name="GenericWhitespace"/>
+        <!-- Checks that there is no whitespace padding of an empty initializer. -->
+        <module name="EmptyForInitializerPad"/>
+        <!-- Checks that there is no whitespace padding of an empty iterator. -->
+        <module name="EmptyForIteratorPad"/>
+        <!-- Checks whitespace padding of method parameters, e.g. void foo(A a, B a) {. -->
+        <module name="MethodParamPad"/>
+        <!-- Checks whitespace padding of parenthesises.-->
+        <module name="ParenPad"/>
+        <!-- Checks whitespace padding of Java casts.-->
+        <module name="TypecastParenPad"/>
+        <!-- Checks that default variable like arg0 are not present. -->
+        <module name="ParameterName">
+            <property name="format" value="^(?!arg[0-9])[_a-z][_a-zA-Z0-9]*$"/>
+        </module>
+    </module>
+</module>
