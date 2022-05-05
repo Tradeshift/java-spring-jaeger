@@ -1,0 +1,17 @@
+<!-- https://github.com/checkstyle/checkstyle/blob/checkstyle-8.19/config/suppressions.xml -->
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!-- Suppress Javadoc in the test packages -->
+    <suppress checks="JavadocPackage|JavadocType|JavadocMethod" files="[\\/][test][\\/]"/>
+    <suppress files="package-info.java" checks="[a-zA-Z0-9]*"/>
+    <!-- Suppress Line length in the test packages, we have long method names -->
+    <suppress checks="LineLength" files="[\\/]test[\\/]"/>
+    <!-- Suppress generated sources -->
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]generated-sources[\\/]"/>
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]generated-test-sources[\\/]"/>
+    <suppress files="target[\\/]gensrc" checks="[a-zA-Z0-9]*"/>
+    <!--  Suppresses translation resource bundle-->
+    <suppress files="[\\/]src/translations/resources[\\/]" checks="[a-zA-Z0-9]*"/>
+</suppressions>
