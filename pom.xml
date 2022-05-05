@@ -16,6 +16,14 @@
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Tradeshift OpenTracing Spring Boot Starter for Jaeger</description>
 
+    <scm>
+        <url>https://github.com/Tradeshift/java-spring-jaeger</url>
+        <developerConnection>scm:git:git@github.com:Tradeshift/java-spring-jaeger.git</developerConnection>
+        <tag>
+            tip
+        </tag>
+    </scm>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
