@@ -4,7 +4,7 @@
 
     <groupId>com.tradeshift</groupId>
     <artifactId>opentracing-spring-jaeger-parent</artifactId>
-    <version>3.3.4</version>
+    <version>3.3.5-SNAPSHOT</version>
     <modules>
         <module>opentracing-spring-jaeger-starter</module>
         <module>opentracing-spring-jaeger-cloud-starter</module>
@@ -19,7 +19,7 @@
         <url>https://github.com/Tradeshift/java-spring-jaeger</url>
         <developerConnection>scm:git:git@github.com:Tradeshift/java-spring-jaeger.git</developerConnection>
         <tag>
-            3.3.4
+            tip
         </tag>
     </scm>
 
