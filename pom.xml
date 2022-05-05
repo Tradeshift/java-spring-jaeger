@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tradeshift</groupId>
     <artifactId>opentracing-spring-jaeger-parent</artifactId>
-    <version>3.3.4-SNAPSHOT</version>
+    <version>3.3.4</version>
     <modules>
         <module>opentracing-spring-jaeger-starter</module>
         <module>opentracing-spring-jaeger-cloud-starter</module>
@@ -20,7 +19,7 @@
         <url>https://github.com/Tradeshift/java-spring-jaeger</url>
         <developerConnection>scm:git:git@github.com:Tradeshift/java-spring-jaeger.git</developerConnection>
         <tag>
-            tip
+            3.3.4
         </tag>
     </scm>
 

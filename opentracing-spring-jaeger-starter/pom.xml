@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.tradeshift</groupId>
         <artifactId>opentracing-spring-jaeger-parent</artifactId>
-        <version>3.3.4-SNAPSHOT</version>
+        <version>3.3.4</version>
     </parent>
 
     <artifactId>opentracing-spring-jaeger-starter</artifactId>
