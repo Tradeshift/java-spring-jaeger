@@ -88,14 +88,14 @@
     </pluginRepositories>
     <distributionManagement>
         <repository>
-            <id>tradeshift-upload-releases</id>
-            <name>Tradeshift Internal Releases</name>
-            <url>https://maven-upload.tradeshift.net/content/repositories/tradeshift-releases/</url>
+            <id>github-package-upload</id>
+            <name>Github Packages</name>
+            <url>https://maven.pkg.github.com/Tradeshift/java-spring-jaeger</url>
         </repository>
         <snapshotRepository>
-            <id>tradeshift-upload-snapshots</id>
-            <name>Tradeshift Internal Snapshots</name>
-            <url>https://maven-upload.tradeshift.net/content/repositories/tradeshift-snapshots/</url>
+            <id>github-package-upload</id>
+            <name>Github Packages</name>
+            <url>https://maven.pkg.github.com/Tradeshift/java-spring-jaeger</url>
         </snapshotRepository>
     </distributionManagement>
 
