@@ -65,7 +65,7 @@ pipeline {
                     checkout scm
                     script {
                         def artifactURL = { pom ->
-                            def baseURL = 'https://maven.tradeshift.net/content/repositories/tradeshift-public-snapshots/com/tradeshift'
+                            def baseURL = 'https://maven.pkg.github.com/Tradeshift/*/com/tradeshift'
                             return "${baseURL}/${pom.artifactId}/${pom.version}"
                         }
 
