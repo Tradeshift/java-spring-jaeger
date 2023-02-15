@@ -50,42 +50,6 @@
         <version.io.zikin.centralsync-maven-plugin>0.1.0</version.io.zikin.centralsync-maven-plugin>
     </properties>
 
-    <repositories>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>fail</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>tradeshift-public</id>
-            <name>Tradeshift - Releases</name>
-            <url>https://maven.tradeshift.net/content/repositories/tradeshift-public</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <id>tradeshift-snapshots</id>
-            <name>Tradeshift - Snapshots</name>
-            <url>https://maven.tradeshift.net/content/repositories/tradeshift-public-snapshots</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>tradeshift-plugins</id>
-            <name>Tradeshift - Plugins</name>
-            <url>https://maven.tradeshift.net/content/repositories/tradeshift-public-plugins</url>
-            <layout>default</layout>
-        </pluginRepository>
-    </pluginRepositories>
     <distributionManagement>
         <repository>
             <id>github-package-upload</id>
