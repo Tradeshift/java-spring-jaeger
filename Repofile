@@ -2,5 +2,6 @@
     "description": "Library for Jaeger implementation of the OpenTracing's io.opentracing.Tracer interface.",
     "maintainers": [
         "validations-and-compliance"
-    ]
+    ],
+    "checks": ["pr-test-sonar"]
 }
