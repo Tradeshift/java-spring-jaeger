@@ -28,12 +28,6 @@ pipeline {
         jdk 'openjdk8-jdk'
         maven 'apache-maven-3.6.0'
     }
-    environment {
-         P12_PASSWORD = credentials 'client-cert-password'
-         MAVEN_OPTS = "-Djavax.net.ssl.keyStore=/var/lib/jenkins/.m2/certs/jenkins.p12 \
-                       -Djavax.net.ssl.keyStoreType=pkcs12 \
-                       -Djavax.net.ssl.keyStorePassword=$P12_PASSWORD"
-     }
 
     stages {
         stage('Clone') {
@@ -84,12 +78,6 @@ pipeline {
                     }
                     githubNotify(status: 'SUCCESS', context: 'deploy', description: 'Deployed version')
                 }
-            }
-        }
-
-        stage('Sonarqube') {
-            steps {
-                sonarqube()
             }
         }
     }
