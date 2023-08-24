@@ -96,5 +96,8 @@ jobs:
       - name: SonarQube Scan
         uses: tradeshift/actions-sonarqube@v2
         with:
+          ca-cert: ${{ secrets.MTLS_CACERT }}
+          client-cert: ${{ secrets.MTLS_CERT }}
+          client-key: ${{ secrets.MTLS_KEY }}
           scanner: maven
           token: ${{ secrets.SONAR_TOKEN }}
