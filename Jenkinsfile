@@ -13,9 +13,6 @@ pipeline {
         label "java8 && docker"
     }
 
-    triggers {
-        issueCommentTrigger('^(retest|mvn deploy)$')
-    }
     options {
         ansiColor('xterm')
         timestamps()
@@ -45,39 +42,6 @@ pipeline {
         stage('Test') {
             steps {
                sh 'mvn -B -U -T1C test'
-            }
-        }
-
-        stage('Deploy - PR') {
-            when {
-                changeRequest()
-                expression { pullRequest.comments.any {it.body == 'mvn deploy'} }
-            }
-            steps {
-                dir('deploy') {
-                    githubNotify(status: 'PENDING', context: 'deploy', description: 'Deploying version')
-                    checkout scm
-                    script {
-                        def artifactURL = { pom ->
-                            def baseURL = 'https://maven.pkg.github.com/Tradeshift/*/com/tradeshift'
-                            return "${baseURL}/${pom.artifactId}/${pom.version}"
-                        }
-
-                        def pom = readMavenPom file: 'pom.xml'
-                        // build triggered by comment "mvn deploy"
-                        echo("This build was triggered by \"mvn deploy\" comment, artifacts will be published to ${artifactURL(pom)}")
-
-                        sh 'mvn -B -U -T1C -DskipTests=true -Dcheckstyle.skip=true clean deploy'
-
-                        pullRequest.comment("Released snapshot artifacts to the maven repo: ${pom.version}")
-                        pullRequest.comments.each {
-                            if (it.body == 'mvn deploy') {
-                                it.delete()
-                            }
-                        }
-                    }
-                    githubNotify(status: 'SUCCESS', context: 'deploy', description: 'Deployed version')
-                }
             }
         }
     }
