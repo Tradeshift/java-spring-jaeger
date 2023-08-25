@@ -1,0 +1,109 @@
+name: Main build
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Enable to trigger a release
+        type: boolean
+        required: true
+        
+jobs:
+  master:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - uses: tradeshift/setup-git-credentials@v2
+        with:
+          credentials: "https://tradeshiftcicomponents:${{ secrets.GH_TOKEN }}@github.com/"
+      - name: Fetch PR HEAD
+        if: contains(github.ref, 'pull')
+        run: |
+          git fetch origin ${{ github.event.pull_request.head.sha }}
+          git checkout ${{ github.event.pull_request.head.sha }}
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - id: setupJava
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: 'zulu'
+      - name: Set up Maven
+        uses: tradeshift/actions-setup-maven@v4.5
+        with:
+          maven-version: 3.9.2
+      - name: Configure maven
+        uses: tradeshift/actions-setup-java-mtls@v1
+        with:
+          java-version: "${{ steps.setupJava.outputs.version }}"
+          maven-settings: ${{ secrets.MAVEN_SETTINGS_GH_PG }}
+          maven-security: ${{ secrets.MAVEN_SECURITY }}
+          maven-p12: ${{ secrets.MAVEN_P12 }}
+          maven-p12-password: ${{ secrets.MAVEN_P12_PASSWORD }}
+          mtls-cacert: ${{ secrets.MTLS_CACERT }}   
+      - name: Compile
+        run: |
+          mvn -B compile
+      - name: Test
+        run: |
+          mvn -B -Dmaven.test.failure.ignore=true install javadoc:javadoc
+      - name: Junit report
+        if: always()
+        uses: tradeshift/actions-junit-report@v3
+        with:
+          report_paths: 'target/surefire-reports/**/*.xml'
+      # Switch to java 11 for the sonar scan
+      - name: Setup java 11 for sonar
+        id: setupJava11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'zulu'
+      - name: Configure maven for java11
+        uses: tradeshift/actions-setup-java-mtls@v1
+        with:
+          java-version: "${{ steps.setupJava11.outputs.version }}"
+          maven-settings: ${{ secrets.MAVEN_SETTINGS_GH_PG }}
+          maven-security: ${{ secrets.MAVEN_SECURITY }}
+          maven-p12: ${{ secrets.MAVEN_P12 }}
+          maven-p12-password: ${{ secrets.MAVEN_P12_PASSWORD }}
+          mtls-cacert: ${{ secrets.MTLS_CACERT }}
+      - name: SonarQube Scan
+        uses: tradeshift/actions-sonarqube@v2
+        with:
+          ca-cert: ${{ secrets.MTLS_CACERT }}
+          client-cert: ${{ secrets.MTLS_CERT }}
+          client-key: ${{ secrets.MTLS_KEY }}
+          scanner: maven
+          token: ${{ secrets.SONAR_TOKEN }}
+      # Release part
+      - name: Configure git for tradeshiftci
+        if: ${{ github.event.inputs.release == 'true' && contains(github.ref, 'refs/heads/master') }}
+        uses: tradeshift/actions-git/configure-from-gpg-key@v1
+        with:
+          gpg-key: ${{ secrets.TRADESHIFTCI_GPG_KEY }}  
+      - name: Release
+        if: ${{ github.event.inputs.release == 'true' && contains(github.ref, 'refs/heads/master') }}
+        run: |
+          SHOULD_RELEASE=$(git show --quiet --format=oneline | grep '\[maven-release-plugin\] prepare for next development iteration' || echo yes)
+          if [ "${SHOULD_RELEASE}" = "yes" ]; then
+            RELEASE_VERSION=$(mvn -q build-helper:parse-version exec:exec -Dexec.executable=/bin/echo -Dexec.args='-n ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}' --non-recursive)
+            echo "Release version: ${RELEASE_VERSION}"
+            # Next incremental version for new version, This can be changed manually later by some PR if we need a major version bump
+            NEXT_VERSION=$(mvn -q build-helper:parse-version exec:exec -Dexec.executable=/bin/echo -Dexec.args='-n ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT' --non-recursive)
+            echo "Next version: ${NEXT_VERSION}"
+            mvn -B release:prepare release:perform -Dresume=false -Darguments="-DskipTests" -DdevelopmentVersion=${NEXT_VERSION} -DreleaseVersion=${RELEASE_VERSION} -DtagNameFormat=v@{project.version}
+          else
+            echo "Will not release without any new commits"
+            echo ${SHOULD_RELEASE}
+          fi;
