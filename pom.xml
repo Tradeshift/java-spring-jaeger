@@ -47,7 +47,7 @@
         <version.maven-surefire-plugin>2.20</version.maven-surefire-plugin>
         <version.maven-javadoc-plugin>3.0.0</version.maven-javadoc-plugin>
         <version.io.takari-maven>0.3.4</version.io.takari-maven>
-        <version.io.zikin.centralsync-maven-plugin>0.1.0</version.io.zikin.centralsync-maven-plugin>
+        <version.io.zikin.centralsync-maven-plugin>0.1.1</version.io.zikin.centralsync-maven-plugin>
     </properties>
 
     <distributionManagement>
