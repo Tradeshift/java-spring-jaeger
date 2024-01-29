@@ -18,7 +18,7 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: Useful commands
       - name: Create Useful commands
-        uses: tradeshift/actions-create-or-update-comment@v3
+        uses: tradeshift/actions-create-or-update-comment@v4
         with:
           comment-id: ${{ steps.fcuc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
