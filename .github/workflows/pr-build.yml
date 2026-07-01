@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Find Useful commands
-        uses: tradeshift/actions-find-comment@v3
+        uses: tradeshift/actions-find-comment@v4
         id: fcuc
         with:
           issue-number: ${{ github.event.pull_request.number }}
